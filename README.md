@@ -1,1 +1,3 @@
-# HJMinimaxRates
+# Hamilton-Jacobi Equation Minimax Estimation Rates
+
+This repository reproduces the results from the paper... 
