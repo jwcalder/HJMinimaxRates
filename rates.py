@@ -1,14 +1,15 @@
 import numpy as np 
 import graphlearning as gl 
 import matplotlib.pyplot as plt
-from estimators import function, estimator
+from estimators import function, estimator, distance
 import plots
 import os
 
 #Parameters
-equation = 'eikonal' #Equation to test
+#equation = 'eikonal' #Equation to test
+equation = 'L1'
 r = 0.3 #Radius
-T = 1000 #Number of trials
+T = 100 #Number of trials
 
 #Wrap function more easily
 def f(X,Y):
@@ -20,7 +21,7 @@ for sigma in [0,0.05]: #For noiseless and noisy
 
     N = [6400,12800,25600,51200,102400]
 
-    if os.path.exists(fname):
+    if 0:#os.path.exists(fname):
 
         #Load experiment from file
         M = np.load(fname)
@@ -42,14 +43,15 @@ for sigma in [0,0.05]: #For noiseless and noisy
                 X = np.random.rand(n,2)
                 u = f(X[:,0],X[:,1])
                 u += sigma*np.random.randn(n)
-                d = np.linalg.norm(X - [0.5,0.5],axis=1)
-                uval = (u+d)[d<r]
+                d = distance(X - [0.5,0.5], equation)
+                de = distance(X - [0.5,0.5],'eikonal')
+                uval = (u+d)[de<r]
                 umin = np.min(uval)
                 if sigma == 0:
-                    uavg = np.mean(u[d<(np.log(n)/n)**(1/2)])
+                    uavg = np.mean(u[de<(np.log(n)/n)**(1/2)])
                 else:
-                    uavg = np.mean(u[d<(1/2)*(1/n)**(1/4)])
-                uest = estimator(X[d<r,0]-0.5,X[d<r,1]-0.5,uval,n,r,equation)
+                    uavg = np.mean(u[de<(1/2)*(1/n)**(1/4)])
+                uest = estimator(X[de<r,0]-0.5,X[de<r,1]-0.5,uval,n,r,equation)
                 umin_errors += [abs(umin-f(0.5,0.5))]
                 uavg_errors += [abs(uavg-f(0.5,0.5))]
                 uest_errors += [abs(uest-f(0.5,0.5))]
