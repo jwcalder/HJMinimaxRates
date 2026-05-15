@@ -6,10 +6,11 @@ import plots
 import os
 
 #Parameters
-#equation = 'eikonal' #Equation to test
-equation = 'L1'
+equation = 'eikonal' #Equation to test
+#equation = 'L1'
 r = 0.3 #Radius
-T = 100 #Number of trials
+T = 1000 #Number of trials
+N = [6400,12800,25600,51200,102400] #Number of samples
 
 #Wrap function more easily
 def f(X,Y):
@@ -19,9 +20,7 @@ for sigma in [0,0.05]: #For noiseless and noisy
 
     fname = 'data/'+equation+'_sigma_%.2f_T_%d_r_%.2f.npz'%(sigma,T,r)
 
-    N = [6400,12800,25600,51200,102400]
-
-    if 0:#os.path.exists(fname):
+    if os.path.exists(fname):
 
         #Load experiment from file
         M = np.load(fname)
@@ -71,13 +70,13 @@ for sigma in [0,0.05]: #For noiseless and noisy
     all_uest_errors = np.mean(all_uest_errors,axis=0)
 
     plt.figure()
-    p,_=np.polyfit(np.log(N),np.log(all_uavg_errors),1)
+    p,_=np.polyfit(np.log(N[-3:]),np.log(all_uavg_errors[-3:]),1)
     plt.loglog(N,all_uavg_errors,'s-',label=r'Lipschitz Estimator: $\mathcal{O}(n^{%.2f})$'%p)
     if sigma == 0:
-        p,_=np.polyfit(np.log(N),np.log(all_umin_errors),1)
+        p,_=np.polyfit(np.log(N[-3:]),np.log(all_umin_errors[-3:]),1)
         plt.loglog(N,all_umin_errors,'o-',label=r'Minimax Estimator: $\mathcal{O}(n^{%.2f})$'%p)
     else:
-        p,_=np.polyfit(np.log(N),np.log(all_uest_errors),1)
+        p,_=np.polyfit(np.log(N[-3:]),np.log(all_uest_errors[-3:]),1)
         plt.loglog(N,all_uest_errors,'o-',label=r'Minimax Estimator: $\mathcal{O}(n^{%.2f})$'%p)
     plt.legend()
     plt.xlabel('Number of samples $n$')

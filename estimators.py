@@ -26,7 +26,6 @@ def distance(X,equation):
         return np.linalg.norm(X,axis=1)
     elif equation == 'L1':
         return np.linalg.norm(X,axis=1,ord=np.inf)
-        #return np.max(np.abs(X - [0.5,0.5]),axis=1)
     else:
         print('Invalid choice!')
 
@@ -65,9 +64,8 @@ def eikonal_estimator(x,y,uob,n,r):
     return u_best
 
 def L1_estimator(x,y,uob,n,r):
-    #Estimator for the eikonal equation
-    return 1/2
 
+    #Estimator for the eikonal equation
     eps = (1/n)**(2/5)
     t = (1/10)*(1/n)**(1/5)
     M = int(10/eps)
