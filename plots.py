@@ -30,7 +30,7 @@ def imsave(fname, img, scale=1, gray=True, order=0):
     plt.imsave(fname,rimg,cmap='gray')
 
 
-def savefig(fname, dim=2, axis=False,grid=False,square=False,pad_inches=0.01):
+def savefig(fname, dim=2, axis=False,grid=False,square=False,pad_inches=0.01,dpi=200):
 
     if square:
         plt.axis('equal')
@@ -54,7 +54,10 @@ def savefig(fname, dim=2, axis=False,grid=False,square=False,pad_inches=0.01):
             plt.gca().yaxis.set_major_locator(plt.NullLocator())
             plt.gca().zaxis.set_major_locator(plt.NullLocator())
 
-    plt.savefig(fname,bbox_inches='tight',pad_inches=pad_inches)
+    if fname[-3:] == 'png':
+        plt.savefig(fname,bbox_inches='tight',pad_inches=pad_inches,dpi=dpi)
+    else:
+        plt.savefig(fname,bbox_inches='tight',pad_inches=pad_inches)
 
 def plot(x,y,labels=None,markers=False,ylog=False,xlabel=None,ylabel=None):
 

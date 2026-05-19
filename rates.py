@@ -8,9 +8,11 @@ import os
 #Parameters
 equation = 'eikonal' #Equation to test
 #equation = 'L1'
-r = 0.3 #Radius
+#equation = 'x'
+r = 0.25 #Radius
 T = 1000 #Number of trials
 N = [6400,12800,25600,51200,102400] #Number of samples
+recompute = False
 
 #Wrap function more easily
 def f(X,Y):
@@ -20,7 +22,7 @@ for sigma in [0,0.05]: #For noiseless and noisy
 
     fname = 'data/'+equation+'_sigma_%.2f_T_%d_r_%.2f.npz'%(sigma,T,r)
 
-    if os.path.exists(fname):
+    if (not recompute) and os.path.exists(fname):
 
         #Load experiment from file
         M = np.load(fname)
