@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from estimators import function, distance
 from matplotlib import cm
 import plots
-import plotly.graph_objects as go
 
 def surface_plot(X,Y,Z):
 
